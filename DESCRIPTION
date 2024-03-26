@@ -1,7 +1,7 @@
 Package: ggsh
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
+Title: Jalali Date/Time Scales for 'ggplot2'
+Version: 0.0.1
 Authors@R:
     person("Mohsen", "Mollayi", role = c("aut", "cre", "cph"), email = "mmollayi@gmail.com")
 Description: More about what it does (maybe more than one line)
@@ -14,7 +14,8 @@ LazyData: true
 Depends: 
     R (>= 4.3)
 Imports: 
-    ggplot2,
+    cli,
+    ggplot2 (>= 3.5.0),
     scales,
     shide
 Roxygen: list(markdown = TRUE)
