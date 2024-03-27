@@ -16,6 +16,7 @@ Depends:
 Imports: 
     cli,
     ggplot2 (>= 3.5.0),
+    rlang,
     scales,
     shide
 Roxygen: list(markdown = TRUE)

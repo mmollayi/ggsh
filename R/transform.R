@@ -1,9 +1,9 @@
-transformt_jdate <- function() {
+transform_jdate <- function() {
     scales::new_transform(
         "jdate",
         transform = function(x) {
             if (!inherits(x, "jdate")) {
-                cli::cli_abort("{.fun transform_date} works with objects of class {.cls jdate} only")
+                cli::cli_abort("{.fun transform_jdate} works with objects of class {.cls jdate} only")
             }
 
             as.numeric(x)
