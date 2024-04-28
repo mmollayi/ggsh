@@ -21,3 +21,21 @@ base + scale_x_jdate(date_minor_breaks = "1 day")
 
 # Set limits
 base + scale_x_jdate(limits = c(shide::jdate_now() - 7, NA))
+
+daei_caps |>
+    dplyr::mutate(persian_date = shide::sh_floor(persian_date, "year")) |>
+    dplyr::group_by(persian_date) |>
+    dplyr::summarise(across(goals, sum)) |>
+    dplyr::mutate(date = as.Date(persian_date)) |>
+    ggplot(aes(persian_date, goals)) +
+    scale_x_jdate(date_breaks = "3 years") +
+    geom_col()
+
+daei_caps |>
+    dplyr::mutate(persian_date = shide::sh_floor(persian_date, "year")) |>
+    dplyr::group_by(persian_date) |>
+    dplyr::summarise(across(goals, sum)) |>
+    dplyr::mutate(date = as.Date(persian_date)) |>
+    ggplot(aes(persian_date, goals)) +
+    scale_x_jdate(breaks = breaks_width2("3 years", offset = c("3 months", "7 days"))) +
+    geom_col()

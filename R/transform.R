@@ -3,6 +3,7 @@ transform_jdate <- function() {
         "jdate",
         transform = function(x) {
             if (!inherits(x, "jdate")) {
+                browser()
                 cli::cli_abort("{.fun transform_jdate} works with objects of class {.cls jdate} only")
             }
 

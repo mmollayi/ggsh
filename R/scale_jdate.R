@@ -51,10 +51,10 @@ jdatetime_scale <- function(aesthetics, transform,
     call <- call %||% rlang::current_call()
 
     if (!is.waive(date_breaks)) {
-        breaks <- breaks_width(date_breaks)
+        breaks <- breaks_width2(date_breaks)
     }
     if (!is.waive(date_minor_breaks)) {
-        minor_breaks <- breaks_width(date_minor_breaks)
+        minor_breaks <- breaks_width2(date_minor_breaks)
     }
     if (!is.waive(date_labels)) {
         labels <- function(self, x) {

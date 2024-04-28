@@ -1,4 +1,4 @@
-breaks_width <- function(width, offset = 0) {
+breaks_width2 <- function(width, offset = 0) {
     force_all(width, offset)
 
     function(x) {
@@ -23,5 +23,5 @@ offset_by.jdate <- function(x, size) {
 #' @method fullseq jdate
 #' @export
 fullseq.jdate <- function(range, size, ...) {
-    as_jdate(scales::fullseq(as.Date(range), size = size, ...))
+    seq(sh_floor(range[1], size), sh_ceiling(range[2], size), by = size)
 }
