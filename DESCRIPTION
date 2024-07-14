@@ -1,11 +1,11 @@
 Package: ggsh
 Type: Package
 Title: Jalali Date/Time Scales for 'ggplot2'
-Version: 0.0.1
+Version: 0.0.0.9000
 Authors@R:
     person("Mohsen", "Mollayi", role = c("aut", "cre", "cph"), email = "mmollayi@gmail.com")
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: A `ggplot2` extension that enables date/time scales based on Jalali calendar.
+    `ggsh` uses classes provided by the `shide` package for mapping aesthetics to date/time types.
 License: MIT + file LICENSE
 URL: https://github.com/mmollayi/ggsh
 BugReports: https://github.com/mmollayi/ggsh/issues
@@ -18,7 +18,7 @@ Imports:
     ggplot2 (>= 3.5.0),
     rlang,
     scales,
-    shide (>= 0.2.0)
+    shide (>= 0.2.1)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Suggests: 
