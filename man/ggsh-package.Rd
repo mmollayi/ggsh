@@ -6,7 +6,7 @@
 \alias{ggsh-package}
 \title{ggsh: Jalali Date/Time Scales for 'ggplot2'}
 \description{
-More about what it does (maybe more than one line) Use four spaces when indenting paragraphs within the Description.
+A `ggplot2` extension that enables date/time scales based on Jalali calendar. `ggsh` uses classes provided by the `shide` package for mapping aesthetics to date/time types.
 }
 \seealso{
 Useful links:

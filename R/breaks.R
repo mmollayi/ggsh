@@ -1,4 +1,4 @@
-breaks_width2 <- function(width, offset = 0) {
+breaks_width_ggsh <- function(width, offset = 0) {
     force_all(width, offset)
 
     function(x) {
@@ -14,6 +14,7 @@ offset_by <- function(x, size) {
     UseMethod("offset_by")
 }
 
+#' @export
 offset_by.jdate <- function(x, size) {
     fun <- function(x) seq(x, length.out = 2, by = size)[2]
     out <- lapply(x, fun)

@@ -1,11 +1,27 @@
+#' @export
 scale_type.jdate <- function(x) c("jdate", "continuous")
 
-label_jdate <- function(format = "%Y-%m-%d") {
-    function(x) {
-        format(x, format = format)
-    }
-}
+x_aes <- c("x", "xmin", "xmax", "xend", "xintercept")
+y_aes <- c("y", "ymin", "ymax", "yend", "yintercept")
 
+#' Position scales for Jalali date/time data
+#'
+#' @inheritParams ggplot2::scale_x_date
+#' @examples
+#' last_month <- shide::jdate_now() - 0:29
+#' set.seed(1)
+#' df <- data.frame(
+#'   date = last_month,
+#'   price = runif(30)
+#' )
+#' base <- ggplot(df, aes(date, price)) +
+#'   geom_line()
+#'
+#' base + scale_x_jdate(date_labels = "%m-%d")
+#' base + scale_x_jdate(date_breaks = "1 week", date_minor_breaks = "1 day", expand = c(0, 0))
+#'
+#' # Set limits
+#' base + scale_x_jdate(limits = c(shide::jdate_now() - 7, NA))
 #' @export
 scale_x_jdate <- function(name = waiver(),
                           breaks = waiver(),
@@ -22,7 +38,43 @@ scale_x_jdate <- function(name = waiver(),
                           sec.axis = waiver()) {
 
     sc <- jdatetime_scale(
-        c("x", "xmin", "xmax", "xend"),
+        x_aes,
+        "date",
+        name = name,
+        palette = identity,
+        breaks = breaks,
+        date_breaks = date_breaks,
+        labels = labels,
+        date_labels = date_labels,
+        minor_breaks = minor_breaks,
+        date_minor_breaks = date_minor_breaks,
+        guide = guide,
+        limits = limits,
+        expand = expand,
+        oob = oob,
+        position = position
+    )
+
+    ggplot2:::set_sec_axis(sec.axis, sc)
+}
+
+#' @rdname scale_x_jdate
+scale_y_jdate <- function(name = waiver(),
+                          breaks = waiver(),
+                          date_breaks = waiver(),
+                          labels = waiver(),
+                          date_labels = waiver(),
+                          minor_breaks = waiver(),
+                          date_minor_breaks = waiver(),
+                          limits = NULL,
+                          expand = waiver(),
+                          oob = censor,
+                          guide = waiver(),
+                          position = "bottom",
+                          sec.axis = waiver()) {
+
+    sc <- jdatetime_scale(
+        y_aes,
         "date",
         name = name,
         palette = identity,
@@ -50,11 +102,14 @@ jdatetime_scale <- function(aesthetics, transform,
                             guide = "legend", call = caller_call(), ...) {
     call <- call %||% rlang::current_call()
 
+    if (is.character(breaks)) breaks <- breaks_width_ggsh(breaks)
+    if (is.character(minor_breaks)) minor_breaks <- breaks_width_ggsh(minor_breaks)
+
     if (!is.waive(date_breaks)) {
-        breaks <- breaks_width2(date_breaks)
+        breaks <- breaks_width_ggsh(date_breaks)
     }
     if (!is.waive(date_minor_breaks)) {
-        minor_breaks <- breaks_width2(date_minor_breaks)
+        minor_breaks <- breaks_width_ggsh(date_minor_breaks)
     }
     if (!is.waive(date_labels)) {
         labels <- function(self, x) {
@@ -65,7 +120,7 @@ jdatetime_scale <- function(aesthetics, transform,
 
     # x/y position aesthetics should use ScaleContinuousDate or
     # ScaleContinuousDatetime; others use ScaleContinuous
-    if (all(aesthetics %in% c("x", "xmin", "xmax", "xend", "y", "ymin", "ymax", "yend"))) {
+    if (all(aesthetics %in% c(x_aes, y_aes))) {
         scale_class <- switch(
             transform,
             date = ScaleContinuousJdate
@@ -97,11 +152,8 @@ jdatetime_scale <- function(aesthetics, transform,
     sc
 }
 
-ScaleContinuousJdate <- ggproto(
-    "ScaleContinuousJdate",
-    ScaleContinuous,
+ScaleContinuousJdate <- ggproto("ScaleContinuousJdate", ScaleContinuous,
     secondary.axis = waiver(),
-
     map = function(self, x, limits = self$get_limits()) {
         self$oob(x, limits)
     },
