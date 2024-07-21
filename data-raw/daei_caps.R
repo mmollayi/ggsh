@@ -56,6 +56,7 @@ df <- df |>
     mutate(persian_date = if_else(is.na(persian_date), shide::as_jdate(date), persian_date))
 
 daei_caps <- df |>
-    select(date, persian_date, competition, opponent, venue, score, goals, notes)
+    select(persian_date, competition, opponent, venue, score, goals, notes) |>
+    rename(date = persian_date)
 
 usethis::use_data(daei_caps, overwrite = TRUE, internal = FALSE)

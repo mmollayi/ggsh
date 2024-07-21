@@ -10,5 +10,3 @@ tepix <- local({
     df <- df |> dplyr::mutate(date = shide::as_jdate(date))
     df
 })
-
-usethis::use_data(tepix, overwrite = TRUE)
