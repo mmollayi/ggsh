@@ -130,6 +130,8 @@ bounds values with \code{NA}.
 Position scales for Jalali date/time data
 }
 \examples{
+library(ggplot2)
+
 last_month <- shide::jdate_now() - 0:29
 set.seed(1)
 df <- data.frame(

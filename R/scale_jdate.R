@@ -8,6 +8,8 @@ y_aes <- c("y", "ymin", "ymax", "yend", "yintercept")
 #'
 #' @inheritParams ggplot2::scale_x_date
 #' @examples
+#' library(ggplot2)
+#'
 #' last_month <- shide::jdate_now() - 0:29
 #' set.seed(1)
 #' df <- data.frame(
@@ -59,6 +61,7 @@ scale_x_jdate <- function(name = waiver(),
 }
 
 #' @rdname scale_x_jdate
+#' @export
 scale_y_jdate <- function(name = waiver(),
                           breaks = waiver(),
                           date_breaks = waiver(),
@@ -113,18 +116,15 @@ jdatetime_scale <- function(aesthetics, transform,
     }
     if (!is.waive(date_labels)) {
         labels <- function(self, x) {
-            #tz <- self$timezone %||% "UTC"
             label_jdate(date_labels)(x)
         }
     }
 
     # x/y position aesthetics should use ScaleContinuousDate or
-    # ScaleContinuousDatetime; others use ScaleContinuous
     if (all(aesthetics %in% c(x_aes, y_aes))) {
         scale_class <- switch(
             transform,
             date = ScaleContinuousJdate
-            #time = ScaleContinuousDatetime
         )
     } else {
         scale_class <- ScaleContinuous
@@ -133,7 +133,6 @@ jdatetime_scale <- function(aesthetics, transform,
     transform <- switch(
         transform,
         date = transform_jdate()
-        #time = transform_time(timezone)
     )
 
     sc <- continuous_scale(
