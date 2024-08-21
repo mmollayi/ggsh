@@ -21,8 +21,21 @@ offset_by.jdate <- function(x, size) {
     do.call(c, out)
 }
 
+#' @export
+offset_by.jdatetime <- function(x, size) {
+    fun <- function(x) seq(x, length.out = 2, by = size)[2]
+    out <- lapply(x, fun)
+    do.call(c, out)
+}
+
 #' @method fullseq jdate
 #' @export
 fullseq.jdate <- function(range, size, ...) {
+    seq(sh_floor(range[1], size), sh_ceiling(range[2], size), by = size)
+}
+
+#' @method fullseq jdatetime
+#' @export
+fullseq.jdatetime <- function(range, size, ...) {
     seq(sh_floor(range[1], size), sh_ceiling(range[2], size), by = size)
 }
