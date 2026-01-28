@@ -151,7 +151,8 @@ jdatetime_scale <- function(aesthetics, transform,
     sc
 }
 
-ScaleContinuousJdate <- ggproto("ScaleContinuousJdate", ScaleContinuous,
+ScaleContinuousJdate <- ggproto(
+    "ScaleContinuousJdate", ScaleContinuous,
     secondary.axis = waiver(),
     map = function(self, x, limits = self$get_limits()) {
         self$oob(x, limits)
@@ -191,4 +192,47 @@ ScaleContinuousJdate <- ggproto("ScaleContinuousJdate", ScaleContinuous,
             ggproto_parent(ScaleContinuous, self)$make_sec_title(...)
         }
     }
+)
+
+ScaleContinuousDatetime <- ggproto(
+    "ScaleContinuousDatetime", ScaleContinuous,
+    secondary.axis = waiver(),
+    timezone = NULL,
+    map = function(self, x, limits = self$get_limits()) {
+        self$oob(x, limits)
+    },
+    transform = function(self, x) {
+        tz <- attr(x, "tzone")
+        if (is.null(self$timezone) && !is.null(tz)) {
+            self$timezone <- tz
+            self$trans <- transform_time(self$timezone)
+        }
+        if (inherits(x, "jdate")) {
+            x <- as_jdatetime(x)
+        }
+        ggproto_parent(ScaleContinuous, self)$transform(x)
+    },
+    break_info = function(self, range = NULL) {
+        breaks <- ggproto_parent(ScaleContinuous, self)$break_info(range)
+        if (!(is_waiver(self$secondary.axis) || self$secondary.axis$empty())) {
+            self$secondary.axis$init(self)
+            breaks <- c(breaks, self$secondary.axis$break_info(breaks$range, self))
+        }
+        breaks
+    },
+    sec_name = function(self) {
+        if (is_waiver(self$secondary.axis)) {
+            waiver()
+        } else {
+            self$secondary.axis$name
+        }
+    },
+    make_sec_title = function(self, ...) {
+        if (!is_waiver(self$secondary.axis)) {
+            self$secondary.axis$make_title(...)
+        } else {
+            ggproto_parent(ScaleContinuous, self)$make_sec_title(...)
+        }
+    }
+
 )
