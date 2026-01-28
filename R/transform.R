@@ -11,7 +11,7 @@ transform_jdate <- function() {
         inverse = function(x) {
             shide::jdate(x)
         },
-        breaks = jdate_breaks(),
+        breaks = scales::breaks_pretty(),
         domain = jdate(c("-1095-01-01", "2326-12-29"))
     )
 }
