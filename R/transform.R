@@ -3,7 +3,9 @@ transform_jdate <- function() {
         "jdate",
         transform = function(x) {
             if (!inherits(x, "jdate")) {
-                cli::cli_abort("{.fun transform_jdate} works with objects of class {.cls jdate} only")
+                cli::cli_abort(
+                    "{.fun transform_jdate} works with objects of class {.cls jdate} only"
+                )
             }
 
             as.numeric(x)
@@ -16,9 +18,29 @@ transform_jdate <- function() {
     )
 }
 
-jdate_breaks <- function(n = 5) {
-    force(n)
-    function(x) {
-        shide::as_jdate(unname(scales::breaks_pretty(n)(as.Date(x))))
+transform_jdatetime <- function(tz = NULL) {
+    force(tz)
+    to_time <- function(x) {
+        jdatetime(x, tzone = tz)
     }
+    from_time <- function(x) {
+        if (!inherits(x, "jdatetime")) {
+            cli::cli_abort(
+                "{.fun transform_jdatetime} works with objects of class {.cls jdatetime} only"
+            )
+        }
+
+        if (is.null(tz)) {
+            tz <<- sh_tzone(x)
+        }
+
+        as.numeric(x)
+    }
+    scales::new_transform(
+        "jdatetime",
+        transform = "from_time",
+        inverse = "to_time",
+        breaks = scales::breaks_pretty(),
+        domain = to_time(c(-Inf, Inf))
+    )
 }

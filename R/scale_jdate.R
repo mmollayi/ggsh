@@ -1,5 +1,6 @@
 #' @export
 scale_type.jdate <- function(x) c("jdate", "continuous")
+scale_type.jdatetime <- function(x) c("jdatetime", "continuous")
 
 x_aes <- c("x", "xmin", "xmax", "xend", "xintercept")
 y_aes <- c("y", "ymin", "ymax", "yend", "yintercept")
@@ -195,7 +196,7 @@ ScaleContinuousJdate <- ggproto(
 )
 
 ScaleContinuousDatetime <- ggproto(
-    "ScaleContinuousDatetime", ScaleContinuous,
+    "ScaleContinuousJdatetime", ScaleContinuous,
     secondary.axis = waiver(),
     timezone = NULL,
     map = function(self, x, limits = self$get_limits()) {
@@ -205,7 +206,7 @@ ScaleContinuousDatetime <- ggproto(
         tz <- attr(x, "tzone")
         if (is.null(self$timezone) && !is.null(tz)) {
             self$timezone <- tz
-            self$trans <- transform_time(self$timezone)
+            self$trans <- transform_jdatetime(self$timezone)
         }
         if (inherits(x, "jdate")) {
             x <- as_jdatetime(x)
