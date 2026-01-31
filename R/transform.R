@@ -30,6 +30,7 @@ transform_jdatetime <- function(tz = NULL) {
             )
         }
 
+        # browser()
         if (is.null(tz)) {
             tz <<- sh_tzone(x)
         }

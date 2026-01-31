@@ -1,5 +1,7 @@
 #' @export
 scale_type.jdate <- function(x) c("jdate", "continuous")
+
+#' @export
 scale_type.jdatetime <- function(x) c("jdatetime", "continuous")
 
 x_aes <- c("x", "xmin", "xmax", "xend", "xintercept")
@@ -98,6 +100,44 @@ scale_y_jdate <- function(name = waiver(),
     ggplot2:::set_sec_axis(sec.axis, sc)
 }
 
+#' @export
+scale_x_jdatetime <- function(name = waiver(),
+                             breaks = waiver(),
+                             date_breaks = waiver(),
+                             labels = waiver(),
+                             date_labels = waiver(),
+                             minor_breaks = waiver(),
+                             date_minor_breaks = waiver(),
+                             timezone = NULL,
+                             limits = NULL,
+                             expand = waiver(),
+                             oob = censor,
+                             guide = waiver(),
+                             position = "bottom",
+                             sec.axis = waiver()) {
+
+    sc <- jdatetime_scale(
+        x_aes,
+        "time",
+        name = name,
+        palette = identity,
+        breaks = breaks,
+        date_breaks = date_breaks,
+        labels = labels,
+        date_labels = date_labels,
+        minor_breaks = minor_breaks,
+        date_minor_breaks = date_minor_breaks,
+        timezone = timezone,
+        guide = guide,
+        limits = limits,
+        expand = expand,
+        oob = oob,
+        position = position
+    )
+
+    ggplot2:::set_sec_axis(sec.axis, sc)
+}
+
 jdatetime_scale <- function(aesthetics, transform,
                             palette, breaks = pretty_breaks(), minor_breaks = waiver(),
                             labels = waiver(), date_breaks = waiver(),
@@ -125,7 +165,8 @@ jdatetime_scale <- function(aesthetics, transform,
     if (all(aesthetics %in% c(x_aes, y_aes))) {
         scale_class <- switch(
             transform,
-            date = ScaleContinuousJdate
+            date = ScaleContinuousJdate,
+            time = ScaleContinuousJdatetime
         )
     } else {
         scale_class <- ScaleContinuous
@@ -133,7 +174,8 @@ jdatetime_scale <- function(aesthetics, transform,
 
     transform <- switch(
         transform,
-        date = transform_jdate()
+        date = transform_jdate(),
+        time = transform_jdatetime()
     )
 
     sc <- continuous_scale(
@@ -195,7 +237,7 @@ ScaleContinuousJdate <- ggproto(
     }
 )
 
-ScaleContinuousDatetime <- ggproto(
+ScaleContinuousJdatetime <- ggproto(
     "ScaleContinuousJdatetime", ScaleContinuous,
     secondary.axis = waiver(),
     timezone = NULL,
@@ -211,6 +253,7 @@ ScaleContinuousDatetime <- ggproto(
         if (inherits(x, "jdate")) {
             x <- as_jdatetime(x)
         }
+        browser()
         ggproto_parent(ScaleContinuous, self)$transform(x)
     },
     break_info = function(self, range = NULL) {
