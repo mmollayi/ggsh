@@ -245,16 +245,23 @@ ScaleContinuousJdatetime <- ggproto(
         self$oob(x, limits)
     },
     transform = function(self, x) {
-        tz <- attr(x, "tzone")
-        if (is.null(self$timezone) && !is.null(tz)) {
+        tz <- sh_tzone(x)
+        if (is.null(self$timezone)) {
             self$timezone <- tz
             self$trans <- transform_jdatetime(self$timezone)
         }
         if (inherits(x, "jdate")) {
             x <- as_jdatetime(x)
         }
-        browser()
         ggproto_parent(ScaleContinuous, self)$transform(x)
+    },
+    # unlike POSIXct, jdatetime objects must be whole numbers
+    get_breaks = function(self, limits = self$get_limits()) {
+        breaks <- ggproto_parent(ScaleContinuous, self)$get_breaks(limits)
+        if (is.null(breaks)) {
+            return(NULL)
+        }
+        breaks <- floor(breaks)
     },
     break_info = function(self, range = NULL) {
         breaks <- ggproto_parent(ScaleContinuous, self)$break_info(range)
@@ -278,5 +285,4 @@ ScaleContinuousJdatetime <- ggproto(
             ggproto_parent(ScaleContinuous, self)$make_sec_title(...)
         }
     }
-
 )
