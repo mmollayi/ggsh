@@ -150,12 +150,15 @@ jdatetime_scale <- function(aesthetics, transform,
     if (is.character(minor_breaks)) minor_breaks <- breaks_width_ggsh(minor_breaks)
 
     if (!is_waiver(date_breaks)) {
+        check_string(date_breaks)
         breaks <- breaks_width_ggsh(date_breaks)
     }
     if (!is_waiver(date_minor_breaks)) {
+        check_string(date_breaks)
         minor_breaks <- breaks_width_ggsh(date_minor_breaks)
     }
     if (!is_waiver(date_labels)) {
+        check_string(date_breaks)
         labels <- function(self, x) {
             label_jdate(date_labels)(x)
         }
