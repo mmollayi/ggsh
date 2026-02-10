@@ -1,55 +1,28 @@
-# nocov start
 force_all <- function(...) list(...)
 
-# Standalone types check brought over from rlang
-check_string <- function(
-        x,
-        ...,
-        allow_empty = TRUE,
-        allow_na = FALSE,
-        allow_null = FALSE,
-        arg = caller_arg(x),
-        call = caller_env()
-) {
-    if (!missing(x)) {
-        is_string <- .rlang_check_is_string(
-            x,
-            allow_empty = allow_empty,
-            allow_na = allow_na,
-            allow_null = allow_null
-        )
-        if (is_string) {
-            return(invisible(NULL))
-        }
+# brought over from scales package
+demo_ggplot <- function(x, scale_name, ...) {
+    call <- substitute(list(...))
+    call[[1]] <- as.name(scale_name)
+    cat(paste0(deparse(call), "\n", collapse = ""))
+
+    if (!requireNamespace("ggplot2", quietly = TRUE)) {
+        cli::cli_inform("Skipping; {.pkg ggplot2} not installed")
+        return(invisible())
     }
 
-    stop_input_type(
-        x,
-        "a single string",
-        ...,
-        allow_na = allow_na,
-        allow_null = allow_null,
-        arg = arg,
-        call = call
-    )
+    scale <- getExportedValue("ggplot2", scale_name)
+    df <- data.frame(x = x, stringsAsFactors = FALSE)
+    ggplot2::ggplot(df, ggplot2::aes(x, 1)) +
+        ggplot2::geom_blank() +
+        scale(NULL, ...) +
+        ggplot2::scale_y_continuous(NULL, breaks = NULL) +
+        ggplot2::theme(aspect.ratio = 1 / 5)
 }
 
-.rlang_check_is_string <- function(x, allow_empty, allow_na, allow_null) {
-    if (rlang::is_string(x)) {
-        if (allow_empty || !rlang::is_string(x, "")) {
-            return(TRUE)
-        }
-    }
-
-    if (allow_null && is_null(x)) {
-        return(TRUE)
-    }
-
-    if (allow_na && (identical(x, NA) || identical(x, na_chr))) {
-        return(TRUE)
-    }
-
-    FALSE
+#' @inherit scales::demo_continuous
+#' @keywords internal
+#' @export
+demo_jdatetime <- function(x, ...) {
+    demo_ggplot(x, "scale_x_jdatetime", ...)
 }
-
-# nocov end
