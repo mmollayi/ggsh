@@ -35,8 +35,8 @@ check_string <- function(
 }
 
 .rlang_check_is_string <- function(x, allow_empty, allow_na, allow_null) {
-    if (is_string(x)) {
-        if (allow_empty || !is_string(x, "")) {
+    if (rlang::is_string(x)) {
+        if (allow_empty || !rlang::is_string(x, "")) {
             return(TRUE)
         }
     }

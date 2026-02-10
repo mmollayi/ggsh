@@ -14,7 +14,7 @@ transform_jdate <- function() {
             shide::jdate(x)
         },
         breaks = scales::breaks_pretty(),
-        domain = jdate(c("-1095-01-01", "2326-12-29"))
+        domain = jdate_make(c(-1095, 2326), c(1, 12), c(1, 29))
     )
 }
 
@@ -30,7 +30,6 @@ transform_jdatetime <- function(tz = NULL) {
             )
         }
 
-        # browser()
         if (is.null(tz)) {
             tz <<- sh_tzone(x)
         }
@@ -42,6 +41,6 @@ transform_jdatetime <- function(tz = NULL) {
         transform = "from_time",
         inverse = "to_time",
         breaks = scales::breaks_pretty(),
-        domain = to_time(c(-Inf, Inf))
+        domain = jdatetime_make(c(-1095, 2326), c(1, 12), c(1, 29), tzone = "UTC")
     )
 }
