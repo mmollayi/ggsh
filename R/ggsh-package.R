@@ -4,7 +4,7 @@
 ## usethis namespace: start
 #' @import ggplot2
 #' @import shide
+#' @import rlang
 #' @importFrom scales fullseq censor pretty_breaks
-#' @importFrom rlang current_call caller_call `%||%`
 ## usethis namespace: end
 NULL
