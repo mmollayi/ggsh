@@ -20,26 +20,24 @@ transform_jdate <- function() {
 
 transform_jdatetime <- function(tz = NULL) {
     force(tz)
-    to_time <- function(x) {
-        jdatetime(x, tzone = tz)
-    }
-    from_time <- function(x) {
-        if (!inherits(x, "jdatetime")) {
-            cli::cli_abort(
-                "{.fun transform_jdatetime} works with objects of class {.cls jdatetime} only"
-            )
-        }
-
-        if (is.null(tz)) {
-            tz <<- sh_tzone(x)
-        }
-
-        as.numeric(x)
-    }
     scales::new_transform(
         "jdatetime",
-        transform = "from_time",
-        inverse = "to_time",
+        transform = function(x) {
+            if (!inherits(x, "jdatetime")) {
+                cli::cli_abort(
+                    "{.fun transform_jdatetime} works with objects of class {.cls jdatetime} only"
+                )
+            }
+
+            if (is.null(tz)) {
+                tz <<- sh_tzone(x)
+            }
+
+            as.numeric(x)
+        },
+        inverse = function(x) {
+            jdatetime(x, tzone = tz)
+        },
         breaks = scales::breaks_pretty(),
         domain = jdatetime_make(c(-1095, 2326), c(1, 12), c(1, 29), tzone = "UTC")
     )
