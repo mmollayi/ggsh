@@ -3,8 +3,8 @@ breaks_width_ggsh <- function(width, offset = 0) {
 
     function(x) {
         x <- fullseq(x, width)
-        for (i in offset) {
-            x <- offset_by(x, i)
+        for (i in seq_along(offset)) {
+            x <- offset_by(x, offset[i])
         }
         x
     }

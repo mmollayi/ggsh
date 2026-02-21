@@ -15,11 +15,16 @@ test_that("fullseq works for jdate as expected", {
 
 test_that("fullseq works for jdatetime as expected", {
     tz <- "Asia/Tehran"
-    dt <- shide::jdatetime(c("1400-01-01 08:29:58", "1400-01-01 08:30:10"), tz)
+    dt <- shide::jdatetime(c("1400-01-01 08:29:59", "1400-01-01 08:30:01"), tz)
 
     expect_equal(
         fullseq(dt, "1 hour"),
         shide::jdatetime_make(1400, 1, 1, 8:9, tzone = tz)
+    )
+
+    expect_equal(
+        fullseq(dt, "secs"),
+        shide::jdatetime_make(1400, 1, 1, 8, c(29, 30, 30), c(59, 0, 1), tzone = tz)
     )
 
     expect_error(fullseq(dt, ".5 secs"))
