@@ -81,7 +81,7 @@ scale_y_jdate <- function(name = waiver(),
 
     sc <- jdatetime_scale(
         y_aes,
-        "date",
+        "jdate",
         name = name,
         palette = identity,
         breaks = breaks,
@@ -118,7 +118,7 @@ scale_x_jdatetime <- function(name = waiver(),
 
     sc <- jdatetime_scale(
         x_aes,
-        "time",
+        "jdatetime",
         name = name,
         palette = identity,
         breaks = breaks,
@@ -158,9 +158,18 @@ jdatetime_scale <- function(aesthetics, transform,
         minor_breaks <- breaks_width_ggsh(date_minor_breaks)
     }
     if (!is_waiver(date_labels)) {
-        check_string(date_breaks)
-        labels <- function(self, x) {
-            label_jdate(date_labels)(x)
+        check_string(date_labels)
+        if (transform == "jdate") {
+            labels <- function(self, x) {
+                label_jdate(date_labels)(x)
+            }
+        }
+
+        if (transform == "jdatetime") {
+            labels <- function(self, x) {
+                tz <- self$timezone %||% "UTC"
+                label_jdatetime(date_labels, tz)(x)
+            }
         }
     }
 
@@ -168,8 +177,8 @@ jdatetime_scale <- function(aesthetics, transform,
     if (all(aesthetics %in% c(x_aes, y_aes))) {
         scale_class <- switch(
             transform,
-            date = ScaleContinuousJdate,
-            time = ScaleContinuousJdatetime
+            jdate = ScaleContinuousJdate,
+            jdatetime = ScaleContinuousJdatetime
         )
     } else {
         scale_class <- ScaleContinuous
@@ -177,8 +186,8 @@ jdatetime_scale <- function(aesthetics, transform,
 
     transform <- switch(
         transform,
-        date = transform_jdate(),
-        time = transform_jdatetime()
+        jdate = transform_jdate(),
+        jdatetime = transform_jdatetime()
     )
 
     sc <- continuous_scale(
