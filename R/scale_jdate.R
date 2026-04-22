@@ -44,7 +44,7 @@ scale_x_jdate <- function(name = waiver(),
 
     sc <- jdatetime_scale(
         x_aes,
-        "date",
+        "jdate",
         name = name,
         palette = identity,
         breaks = breaks,
