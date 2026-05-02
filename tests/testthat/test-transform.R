@@ -24,3 +24,16 @@ test_that("tz arugment overrules default time zone", {
 
     expect_equal(sh_tzone(x), "UTC")
 })
+
+test_that("transform_jdate can invert domain", {
+    testthat::skip("Blocked: shide does not yet support Inf/-Inf for jdate")
+    trans <- transform_jdate()
+    expect_equal(trans$transform(trans$domain), c(-Inf, Inf))
+})
+
+
+test_that("transform_jdatetime can invert domain", {
+    testthat::skip("Blocked: shide does not yet support Inf/-Inf for jdatetime")
+    trans <- transform_jdatetime()
+    expect_equal(trans$transform(trans$domain), c(-Inf, Inf))
+})

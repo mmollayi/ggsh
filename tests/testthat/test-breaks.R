@@ -8,11 +8,6 @@ test_that("breaks_pretty() dispatches to pretty.jdatetime() for jdatetime inputs
     expect_s3_class(scales::breaks_pretty(n = 2)(x), "jdatetime")
 })
 
-test_that("breaks_width_ggsh() can take date units for jdate inputs", {
-    x <- jdatetime_make(1404, 11, 23:24, tzone = "Asia/Tehran")
-    expect_s3_class(scales::breaks_pretty(n = 2)(x), "jdatetime")
-})
-
 test_that("breaks_width_ggsh() can take numeric offset", {
     x <- jdatetime_make(1404, 11, 23:24, tzone = "Asia/Tehran")
     expect_equal(
