@@ -43,16 +43,13 @@ test_that("timezone is not cached across calls", {
     expect_equal(get_panel_scales(p2)$x$timezone, "Asia/Tehran")
 })
 
-test_that("time scale date breaks and labels work", {
-    skip_if_not_installed("hms")
+test_that("jdate scale breaks and labels work", {
+    d <- jdate(x) + c(0, 6)
 
-    d <- c(base_time(), base_time() + 5 * 24 * 3600) - base_time()
-
-    sc <- scale_x_time(date_breaks = "1 day", date_labels = "%d")
+    sc <- scale_x_jdate(date_breaks = "1 day", date_labels = "%d")
     sc$train(d)
-
     breaks <- sc$get_breaks()
-    expect_length(breaks, 6)
+    expect_equal(breaks, fullseq(d, "days"))
     labels <- sc$get_labels(breaks)
-    expect_equal(labels, paste0("0", 1:6))
+    expect_equal(labels, as.character(19:26))
 })
