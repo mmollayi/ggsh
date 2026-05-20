@@ -5,6 +5,6 @@
 #' @import ggplot2
 #' @import shide
 #' @import rlang
-#' @importFrom scales fullseq censor pretty_breaks
+#' @importFrom scales fullseq censor breaks_pretty
 ## usethis namespace: end
 NULL

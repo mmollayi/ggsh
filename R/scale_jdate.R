@@ -139,7 +139,7 @@ scale_x_jdatetime <- function(name = waiver(),
 }
 
 jdatetime_scale <- function(aesthetics, transform,
-                            palette, breaks = pretty_breaks(), minor_breaks = waiver(),
+                            palette, breaks = breaks_pretty(), minor_breaks = waiver(),
                             labels = waiver(), date_breaks = waiver(),
                             date_labels = waiver(),
                             date_minor_breaks = waiver(), timezone = NULL,
