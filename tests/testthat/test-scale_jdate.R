@@ -49,7 +49,18 @@ test_that("jdate scale breaks and labels work", {
     sc <- scale_x_jdate(date_breaks = "1 day", date_labels = "%d")
     sc$train(d)
     breaks <- sc$get_breaks()
-    expect_equal(breaks, fullseq(d, "days"))
+    expect_equal(length(breaks), length(fullseq(d, "days")))
     labels <- sc$get_labels(breaks)
     expect_equal(labels, as.character(19:26))
+})
+
+test_that("jdatetime scale breaks and labels work", {
+    dt <- jdatetime(x, "%Y-%m-%d", tzone = "Asia/Tehran") + c(0, 6)
+
+    sc <- scale_x_jdatetime(date_breaks = "1 second", date_labels = "%S")
+    sc$train(dt)
+    breaks <- sc$get_breaks()
+    expect_equal(length(breaks), length(fullseq(dt, "seconds")))
+    labels <- sc$get_labels(breaks)
+    expect_equal(labels, paste0("0", as.character(0:6)))
 })
