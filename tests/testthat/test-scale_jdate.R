@@ -64,3 +64,32 @@ test_that("jdatetime scale breaks and labels work", {
     labels <- sc$get_labels(breaks)
     expect_equal(labels, paste0("0", as.character(0:6)))
 })
+
+# Visual tests ------------------------------------------------------------
+
+test_that("jdate scale draws correctly", {
+    # Adapted from ggplot2's scale-date visual tests.
+    # The same RNG seed and sampling strategy are used so that the
+    # resulting plot closely matches the ggplot2 reference plots,
+    # allowing visual inspection to focus on Jalali axis behavior.
+    set.seed(321)
+    df <- data.frame(
+        dx = seq(jdate("1403-12-30"), length.out = 100, by = "1 day")[sample(
+            100,
+            50
+        )],
+        price = runif(50)
+    )
+    df <- df[order(df$dx), ]
+
+    dt <- ggplot(df, aes(dx, price)) + geom_line()
+    expect_doppelganger("dates along x, default breaks", dt)
+    expect_doppelganger(
+        "scale_x_jdate(labels = label_jdate(\"%m/%d\"))",
+        dt + scale_x_jdate(labels = label_jdate("%m/%d"))
+    )
+    expect_doppelganger(
+        "scale_x_jdate(labels = label_jdate(\"%J\"))",
+        dt + scale_x_jdate(labels = label_jdate("%J"))
+    )
+})
