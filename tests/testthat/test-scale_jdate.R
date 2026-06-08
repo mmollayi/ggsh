@@ -65,6 +65,13 @@ test_that("jdatetime scale breaks and labels work", {
     expect_equal(labels, paste0("0", as.character(0:6)))
 })
 
+test_that("jdate and jdatetime scales throw errors on numeric input", {
+    p <- ggplot(data.frame(x = 1, y = 1), aes(x, y)) + geom_point()
+
+    expect_error(ggplot_build(p + scale_x_jdate()))
+    expect_error(ggplot_build(p + scale_x_jdatetime()))
+})
+
 # Visual tests ------------------------------------------------------------
 
 test_that("jdate scale draws correctly", {
