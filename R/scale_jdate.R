@@ -257,8 +257,8 @@ ScaleContinuousJdatetime <- ggproto(
         self$oob(x, limits)
     },
     transform = function(self, x) {
-        tz <- sh_tzone(x)
-        if (is.null(self$timezone)) {
+        tz <- attr(x, "tzone")
+        if (is.null(self$timezone) && !is.null(tz)) {
             self$timezone <- tz
             self$trans <- transform_jdatetime(self$timezone)
         }

@@ -6,6 +6,20 @@ df <- data.frame(
     y = 1
 )
 
+test_that("date(time) scales coerce data types", {
+    d <- jdate(x)
+    dt <- as_jdatetime(d)
+
+    sc <- scale_x_jdatetime()
+    df <- sc$transform_df(data.frame(x = d))
+    expect_equal(df$x, as.numeric(dt))
+
+    sc <- scale_x_jdate()
+    df <- sc$transform_df(data.frame(x = dt))
+    expect_equal(df$x, as.numeric(d))
+
+})
+
 test_that("inherits timezone from data", {
     # Local time
     p <- ggplot(df, aes(y = y)) +
