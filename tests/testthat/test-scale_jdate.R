@@ -6,7 +6,7 @@ df <- data.frame(
     y = 1
 )
 
-test_that("date(time) scales coerce data types", {
+test_that("jdate(time) scales coerce data types", {
     d <- jdate(x)
     dt <- as_jdatetime(d)
 
@@ -17,7 +17,6 @@ test_that("date(time) scales coerce data types", {
     sc <- scale_x_jdate()
     df <- sc$transform_df(data.frame(x = dt))
     expect_equal(df$x, as.numeric(d))
-
 })
 
 test_that("inherits timezone from data", {
@@ -79,11 +78,12 @@ test_that("jdatetime scale breaks and labels work", {
     expect_equal(labels, paste0("0", as.character(0:6)))
 })
 
-test_that("jdate and jdatetime scales throw errors on numeric input", {
-    p <- ggplot(data.frame(x = 1, y = 1), aes(x, y)) + geom_point()
+test_that("jdate(time) scales throw errors on numeric input", {
+    sc <- scale_x_jdatetime()
+    expect_error(sc$transform_df(data.frame(x = 1)))
 
-    expect_error(ggplot_build(p + scale_x_jdate()))
-    expect_error(ggplot_build(p + scale_x_jdatetime()))
+    sc <- scale_x_jdate()
+    expect_error(sc$transform_df(data.frame(x = 1)))
 })
 
 # Visual tests ------------------------------------------------------------
