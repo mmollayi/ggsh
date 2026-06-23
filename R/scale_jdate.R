@@ -257,14 +257,15 @@ ScaleContinuousJdatetime <- ggproto(
         self$oob(x, limits)
     },
     transform = function(self, x) {
+        if (inherits(x, "jdate")) {
+            x <- as_jdatetime(x)
+        }
         tz <- attr(x, "tzone")
         if (is.null(self$timezone) && !is.null(tz)) {
             self$timezone <- tz
             self$trans <- transform_jdatetime(self$timezone)
         }
-        if (inherits(x, "jdate")) {
-            x <- as_jdatetime(x)
-        }
+
         ggproto_parent(ScaleContinuous, self)$transform(x)
     },
     # unlike POSIXct, jdatetime objects must be whole numbers

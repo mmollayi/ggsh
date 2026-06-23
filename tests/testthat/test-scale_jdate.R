@@ -19,6 +19,14 @@ test_that("jdate(time) scales coerce data types", {
     expect_equal(df$x, as.numeric(d))
 })
 
+test_that("when jdate coerces to jdatetime, local timezone is used", {
+    d <- jdate(x)
+
+    sc <- scale_x_jdatetime()
+    sc$transform(d)
+    expect_equal(sc$timezone, "")
+})
+
 test_that("inherits timezone from data", {
     # Local time
     p <- ggplot(df, aes(y = y)) +
