@@ -11,7 +11,7 @@ demo_ggplot <- function(x, scale_name, ...) {
         return(invisible())
     }
 
-    scale <- getExportedValue("ggplot2", scale_name)
+    scale <- get(scale_name, envir = asNamespace("ggsh"))
     df <- data.frame(x = x, stringsAsFactors = FALSE)
     ggplot2::ggplot(df, ggplot2::aes(x, 1)) +
         ggplot2::geom_blank() +
