@@ -1,3 +1,29 @@
+#' Transformation for Jalali dates and date-times
+#'
+#' Create transformation objects for `jdate` and `jdatetime` values for use
+#' with `ggsh` scales such as `scale_x_jdate()` and `scale_x_jdatetime()`.
+#'
+#' @param tz Optional time zone used when transforming `jdatetime` values.
+#' If `NULL`, the first non-NULL time zone found in the data is used.
+#' @return A transformation object created with [scales::new_transform()].
+#' @seealso
+#' [scales::new_transform()], [scales::transform_date()], [scales::transform_time()]
+#' @examples
+#' dates <- jdate(c("1400-01-01", "1401-01-01", "1402-01-01"))
+#' # Create a transformation object
+#' trans <- transform_jdate()
+#' # Transform Jalali dates to numeric values
+#' trans$transform(dates)
+#' # Recover the original dates
+#' trans$inverse(trans$transform(dates))
+#' # Generate and format axis breaks
+#' trans$format(trans$breaks(range(dates)))
+#'
+#' # Use a specific time zone when converting back from numeric values
+#' trans <- transform_jdatetime(tz = "UTC")
+#' times <- jdatetime("1403-01-01 09:00:00", tz = "Asia/Tehran") + 0:1
+#' trans$inverse(trans$transform(times))
+#' @export
 transform_jdate <- function() {
     scales::new_transform(
         "jdate",
@@ -18,6 +44,8 @@ transform_jdate <- function() {
     )
 }
 
+#' @rdname transform_jdate
+#' @export
 transform_jdatetime <- function(tz = NULL) {
     force(tz)
     scales::new_transform(
