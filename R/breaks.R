@@ -1,3 +1,32 @@
+#' Equally spaced breaks for Jalali date and date-time scales
+#'
+#' An equivalent of [scales::breaks_width()] that returns a break-generating
+#' function for use with `ggsh` scales. The returned function generates equally
+#' spaced breaks for a given `jdate` or `jdatetime` range.
+#'
+#' @param width Interval between consecutive breaks. For details on
+#'    supported interval specifications, see "Interval specification".
+#' @param offset Optional offset or vector of offsets used to shift
+#'    breaks away from the default interval boundaries. When multiple
+#'    offsets are supplied, they are applied sequentially in the
+#'    order given. For details on supported interval specifications,
+#'    see "Interval specification".
+#' @details
+#' Given a `jdate` or `jdatetime` range, the returned function:
+#'
+#' 1. Extends the range, if necessary, so that it is covered by complete intervals.
+#'
+#' 2. Generates equally spaced break positions at the specified interval.
+#'
+#' 3. Applies `offset`, if supplied, to shift the resulting break positions.
+#' @return
+#' A break-generating function that takes a range of `jdate` or `jdatetime`
+#' values and returns a vector of break positions of the same type.
+#'
+#' @section Interval specification:
+#' Intervals are specified as strings of the form `"{n} {unit}"`, where "n" is
+#' a positive integer and "unit" is a valid date or time unit.
+#' Examples include "2 days",  "15 min" and "15 minute".
 #' @export
 breaks_width_ggsh <- function(width, offset = 0) {
     force_all(width, offset)
@@ -35,11 +64,16 @@ offset_by.jdatetime <- function(x, size) {
 #' Methods for [scales::fullseq()] supporting `jdate` and `jdatetime` vectors.
 #'
 #' These methods generate complete sequences of regularly spaced Jalali date or
-#' date-time values covering the range of x. The resulting sequence is aligned
+#' date-time values covering a specified range. The resulting sequence is aligned
 #' to interval boundaries determined by size, and may extend beyond the
-#' minimum and maximum values of x so that the entire range is covered by
+#' lower and upper limits of `range` so that the entire range is covered by
 #' complete intervals.
 #'
+#' @param range A `jdate` or `jdatetime` vector of length two
+#'   specifying a range.
+#' @param size Interval used to generate the sequence and determine alignment
+#'    boundaries. For details on supported interval specifications,
+#'    see "Interval specification".
 #' @return An object of the same class as `x` (`jdate` or `jdatetime`).
 #' @examples
 #' fullseq(jdate(c("1405-05-11", "1405-06-15")), "1 month")

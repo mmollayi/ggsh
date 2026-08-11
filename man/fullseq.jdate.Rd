@@ -9,6 +9,14 @@
 
 \method{fullseq}{jdatetime}(range, size, ...)
 }
+\arguments{
+\item{range}{A \code{jdate} or \code{jdatetime} vector of length two
+specifying a range.}
+
+\item{size}{Interval used to generate the sequence and determine alignment
+boundaries. For details on supported interval specifications,
+see "Interval specification".}
+}
 \value{
 An object of the same class as \code{x} (\code{jdate} or \code{jdatetime}).
 }
@@ -16,9 +24,9 @@ An object of the same class as \code{x} (\code{jdate} or \code{jdatetime}).
 Methods for \code{\link[scales:fullseq]{scales::fullseq()}} supporting \code{jdate} and \code{jdatetime} vectors.
 
 These methods generate complete sequences of regularly spaced Jalali date or
-date-time values covering the range of x. The resulting sequence is aligned
+date-time values covering a specified range. The resulting sequence is aligned
 to interval boundaries determined by size, and may extend beyond the
-minimum and maximum values of x so that the entire range is covered by
+lower and upper limits of \code{range} so that the entire range is covered by
 complete intervals.
 }
 \examples{
