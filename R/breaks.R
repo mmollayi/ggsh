@@ -23,10 +23,32 @@
 #' A break-generating function that takes a range of `jdate` or `jdatetime`
 #' values and returns a vector of break positions of the same type.
 #'
+#' @seealso [scales::breaks_width()]
 #' @section Interval specification:
 #' Intervals are specified as strings of the form `"{n} {unit}"`, where "n" is
 #' a positive integer and "unit" is a valid date or time unit.
 #' Examples include "2 days",  "15 min" and "15 minute".
+#' @examples
+#' three_months <- jdatetime(c("1405-06-01", "1405-09-01"), format = "%F")
+#' demo_jdatetime(three_months)
+#' demo_jdatetime(
+#'     three_months,
+#'     breaks = breaks_width_ggsh("1 month"),
+#'     labels = label_jdatetime("%m/%d")
+#' )
+#' # Or equivalently:
+#' demo_jdatetime(
+#'     three_months,
+#'     date_breaks = "1 month",
+#'     labels = label_jdatetime("%m/%d")
+#' )
+#'
+#' # Shift monthly breaks by 14 days
+#' demo_jdatetime(
+#'     three_months,
+#'     breaks = breaks_width_ggsh("1 month", offset = "14 days"),
+#'     labels = label_jdatetime("%m/%d")
+#' )
 #' @export
 breaks_width_ggsh <- function(width, offset = 0) {
     force_all(width, offset)
