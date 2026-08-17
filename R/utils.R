@@ -20,7 +20,17 @@ demo_ggplot <- function(x, scale_name, ...) {
         ggplot2::theme(aspect.ratio = 1 / 5)
 }
 
-#' @inherit scales::demo_continuous
+#' Demonstrate a jdatetime scale
+#'
+#' Quickly demonstrate the appearance of a jdatetime scale with different
+#' breaks and labels. This is primarily a developer utility for exploring
+#' and testing scale behavior.
+#'
+#' @param x A `jdatetime` vector.
+#' @return A ggplot object demonstrating the appearance of a jdatetime scale.
+#' @seealso [scales::demo_datetime()]
+#' @examples
+#' demo_jdatetime(jdate(c("1405-01-01", "1406-01-01")))
 #' @keywords internal
 #' @export
 demo_jdatetime <- function(x, ...) {

@@ -16,6 +16,8 @@ specifying a range.}
 \item{size}{Interval used to generate the sequence and determine alignment
 boundaries. For details on supported interval specifications,
 see "Interval specification".}
+
+\item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
 An object of the same class as \code{x} (\code{jdate} or \code{jdatetime}).
@@ -29,6 +31,13 @@ to interval boundaries determined by size, and may extend beyond the
 lower and upper limits of \code{range} so that the entire range is covered by
 complete intervals.
 }
+\section{Interval specification}{
+
+Intervals are specified as strings of the form \code{"{n} {unit}"}, where "n" is
+a positive integer and "unit" is a valid date or time unit.
+Examples include "2 days",  "15 min" and "15 minute".
+}
+
 \examples{
 fullseq(jdate(c("1405-05-11", "1405-06-15")), "1 month")
 fullseq(jdatetime(c("1405-05-11 10:12:00", "1405-05-11 11:45:00")), "1 hour")

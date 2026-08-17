@@ -2,15 +2,25 @@
 % Please edit documentation in R/utils.R
 \name{demo_jdatetime}
 \alias{demo_jdatetime}
-\title{Demonstrate scales functions with ggplot2 code}
+\title{Demonstrate a jdatetime scale}
 \usage{
 demo_jdatetime(x, ...)
 }
 \arguments{
-\item{x}{A vector of data}
+\item{x}{A \code{jdatetime} vector.}
+}
+\value{
+A ggplot object demonstrating the appearance of a jdatetime scale.
 }
 \description{
-These functions generate ggplot2 code needed to use scales functions for
-real code.
+Quickly demonstrate the appearance of a jdatetime scale with different
+breaks and labels. This is primarily a developer utility for exploring
+and testing scale behavior.
+}
+\examples{
+demo_jdatetime(jdate(c("1405-01-01", "1406-01-01")))
+}
+\seealso{
+\code{\link[scales:demo_continuous]{scales::demo_datetime()}}
 }
 \keyword{internal}

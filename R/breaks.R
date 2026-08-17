@@ -96,13 +96,16 @@ offset_by.jdatetime <- function(x, size) {
 #' @param size Interval used to generate the sequence and determine alignment
 #'    boundaries. For details on supported interval specifications,
 #'    see "Interval specification".
+#' @inheritParams rlang::args_dots_empty
 #' @return An object of the same class as `x` (`jdate` or `jdatetime`).
+#' @inheritSection breaks_width_ggsh Interval specification
 #' @examples
 #' fullseq(jdate(c("1405-05-11", "1405-06-15")), "1 month")
 #' fullseq(jdatetime(c("1405-05-11 10:12:00", "1405-05-11 11:45:00")), "1 hour")
 #' @method fullseq jdate
 #' @export
 fullseq.jdate <- function(range, size, ...) {
+    check_dots_empty()
     seq(sh_floor(range[1], size), sh_ceiling(range[2], size), by = size)
 }
 
@@ -110,5 +113,6 @@ fullseq.jdate <- function(range, size, ...) {
 #' @method fullseq jdatetime
 #' @export
 fullseq.jdatetime <- function(range, size, ...) {
+    check_dots_empty()
     seq(sh_floor(range[1], size), sh_ceiling(range[2], size), by = size)
 }
