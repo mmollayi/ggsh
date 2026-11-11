@@ -1,3 +1,32 @@
+#' Position scales for Jalali date and date-time data
+#'
+#' These scales are designed for variables of class `jdate` and `jdatetime`
+#' from the `shide` package. They behave similarly to ggplot2 position scales
+#' for `Date`and `POSIXct` data, but generate breaks and labels using the
+#' Jalali calendar.
+#' @inheritParams ggplot2::scale_x_date
+#' @examples
+#' library(ggplot2)
+#'
+#' one_month <- jdate("1405-05-15") + 0:29
+#' set.seed(1)
+#' df <- data.frame(date = one_month, price = runif(30))
+#' base <- ggplot(df, aes(date, price)) +
+#'   geom_line()
+#'
+#' base +
+#'   scale_x_date(
+#'     date_breaks = "1 week",
+#'     date_labels = "%m/%d",
+#'     date_minor_breaks = "1 day",
+#'     expand = c(0, 0)
+#'   )
+#' # Set limits
+#' base + scale_x_jdate(limits = c(one_month[30] - 7, NA))
+#'
+#' @name scale_jdate
+NULL
+
 #' @export
 scale_type.jdate <- function(x) c("jdate", "continuous")
 
@@ -7,26 +36,7 @@ scale_type.jdatetime <- function(x) c("jdatetime", "continuous")
 x_aes <- c("x", "xmin", "xmax", "xend", "xintercept")
 y_aes <- c("y", "ymin", "ymax", "yend", "yintercept")
 
-#' Position scales for Jalali date/time data
-#'
-#' @inheritParams ggplot2::scale_x_date
-#' @examples
-#' library(ggplot2)
-#'
-#' last_month <- shide::jdate_now() - 0:29
-#' set.seed(1)
-#' df <- data.frame(
-#'   date = last_month,
-#'   price = runif(30)
-#' )
-#' base <- ggplot(df, aes(date, price)) +
-#'   geom_line()
-#'
-#' base + scale_x_jdate(date_labels = "%m-%d")
-#' base + scale_x_jdate(date_breaks = "1 week", date_minor_breaks = "1 day", expand = c(0, 0))
-#'
-#' # Set limits
-#' base + scale_x_jdate(limits = c(shide::jdate_now() - 7, NA))
+#' @rdname scale_jdate
 #' @export
 scale_x_jdate <- function(name = waiver(),
                           breaks = waiver(),
@@ -63,7 +73,7 @@ scale_x_jdate <- function(name = waiver(),
     ggplot2:::set_sec_axis(sec.axis, sc)
 }
 
-#' @rdname scale_x_jdate
+#' @rdname scale_jdate
 #' @export
 scale_y_jdate <- function(name = waiver(),
                           breaks = waiver(),
